@@ -1,0 +1,53 @@
+graph TD
+    Start[시험지 만들기 시작] --> GradeSelect[학년 선택 화면]
+    GradeSelect --> Grade1to6{학년 선택<br/>초1 ~ 초6}
+    Grade1to6 --> SemesterSelect[학기 선택]
+    SemesterSelect --> Semester{1학기 or 2학기}
+    Semester --> Confirm[선택 확인]
+    Confirm --> QuestionPage[문제 입력 페이지<br/>1/25]
+    
+    QuestionPage --> QuestionNum[현재 문제 번호 표시]
+    QuestionNum --> ImageSection[이미지 영역]
+    ImageSection --> ImageAction{이미지 첨부}
+    ImageAction -->|파일 선택| ImageUpload[이미지 업로드]
+    ImageUpload --> ImagePreview[미리보기 표시]
+    ImageAction -->|건너뛰기| ChoiceSection
+    ImagePreview --> ChoiceSection[선지 입력 영역]
+    
+    ChoiceSection --> Choice1[①번 선지 입력]
+    Choice1 --> Choice2[②번 선지 입력]
+    Choice2 --> Choice3[③번 선지 입력]
+    Choice3 --> Choice4[④번 선지 입력]
+    Choice4 --> AnswerSection[정답 선택 영역]
+    
+    AnswerSection --> AnswerRadio{라디오 버튼<br/>①②③④}
+    AnswerRadio --> Validation{입력 검증}
+    Validation -->|선지 미입력| ErrorChoice[선지를 모두<br/>입력해주세요]
+    ErrorChoice --> ChoiceSection
+    Validation -->|정답 미선택| ErrorAnswer[정답을 선택해주세요]
+    ErrorAnswer --> AnswerSection
+    Validation -->|모두 완료| SaveQuestion[문제 임시 저장]
+    
+    SaveQuestion --> Progress{진행 상황}
+    Progress -->|1~24번| NextBtn[다음 문제 버튼]
+    NextBtn --> QuestionPage
+    Progress -->|25번| FinalSave[최종 저장 버튼]
+    
+    FinalSave --> ConfirmSave{저장 확인}
+    ConfirmSave -->|취소| QuestionPage
+    ConfirmSave -->|확인| SaveDB[(시험지 DB 저장<br/>- 학년/학기<br/>- 25문제 데이터<br/>- 생성 일시)]
+    SaveDB --> Success[저장 완료 메시지]
+    Success --> ReturnHome[관리자 홈으로]
+    
+    %% 중간 이탈 처리
+    QuestionPage -.->|뒤로가기| Warning{작성 중인<br/>데이터 있음}
+    Warning -->|임시 저장| TempSave[(임시 저장)]
+    Warning -->|삭제하고 나가기| ReturnHome
+    
+    classDef inputColor fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef validateColor fill:#ffebee,stroke:#c62828,stroke-width:2px
+    classDef saveColor fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    
+    class ImageSection,ChoiceSection,AnswerSection inputColor
+    class Validation,ErrorChoice,ErrorAnswer validateColor
+    class SaveQuestion,SaveDB,Success saveColor

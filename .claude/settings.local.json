@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run dev:server:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm run dev:*)",
+      "Bash(tasklist:*)",
+      "Bash(tree:*)",
+      "Bash(npm install:*)",
+      "Bash(timeout 5 npm run dev:*)",
+      "Bash(cmd.exe /c \"taskkill /PID 9136 /F & taskkill /PID 8384 /F\")",
+      "Bash(npx kill-port 3001)",
+      "Bash(timeout 3 echo:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(timeout:*)",
+      "Bash(dir:*)",
+      "Bash(sqlite3:*)",
+      "Bash(node check-db.js:*)",
+      "Bash(del:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
