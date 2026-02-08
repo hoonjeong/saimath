@@ -1,13 +1,772 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>사이수학 입학테스트</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사이수학 - SAY MATH | 수학과의 적정한 사이</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // 브랜드 색상
+                        deepblue: {
+                            50: '#e6e8f2',
+                            100: '#c0c5e0',
+                            200: '#969fcc',
+                            300: '#6c79b8',
+                            400: '#4d5ca8',
+                            500: '#2e3f99',
+                            600: '#283991',
+                            700: '#203186',
+                            800: '#18297c',
+                            900: '#04165D', // 대표색상
+                        },
+                        cyan: {
+                            50: '#e0f7fb',
+                            100: '#b3ebf5',
+                            200: '#80deef',
+                            300: '#4dd0e8',
+                            400: '#26c6e3',
+                            500: '#02B1DC', // 서브색상
+                            600: '#02a2c8',
+                            700: '#018fb0',
+                            800: '#017d99',
+                            900: '#015d73',
+                        },
+                        golden: {
+                            50: '#fefce8',
+                            100: '#fef9c3',
+                            200: '#fef08a',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#F1C615', // 포인트색상
+                            600: '#d4a90d',
+                            700: '#a78b0a',
+                            800: '#7a6608',
+                            900: '#4d4005',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .gradient-hero {
+            background: linear-gradient(135deg, #02B1DC 0%, #04165D 60%, #031247 100%);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #02B1DC 0%, #04165D 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(4, 22, 93, 0.15);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #02B1DC 0%, #04165D 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(4, 22, 93, 0.3);
+        }
+        .btn-golden {
+            background: linear-gradient(135deg, #F1C615 0%, #d4a90d 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-golden:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(241, 198, 21, 0.4);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="logo/SNS적용이미지 (2).png" alt="사이수학 로고" class="h-10 w-auto">
+                    <span class="text-xl font-bold text-deepblue-900">사이수학</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#about" class="text-gray-600 hover:text-cyan-500 transition font-medium">소개</a>
+                    <a href="program.html" class="text-gray-600 hover:text-cyan-500 transition font-medium">프로그램</a>
+                    <a href="#diagnosis" class="text-gray-600 hover:text-cyan-500 transition font-medium">진단</a>
+                    <a href="#method" class="text-gray-600 hover:text-cyan-500 transition font-medium">수업방식</a>
+                    <a href="#reviews" class="text-gray-600 hover:text-cyan-500 transition font-medium">후기</a>
+                    <a href="#contact" class="text-gray-600 hover:text-cyan-500 transition font-medium">입학안내</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="#contact" class="hidden sm:inline-flex px-5 py-2.5 btn-primary text-white rounded-full font-medium shadow-lg">
+                        진단 신청
+                    </a>
+                    <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#about" class="block py-2 text-gray-600 hover:text-cyan-500">소개</a>
+                <a href="program.html" class="block py-2 text-gray-600 hover:text-cyan-500">프로그램</a>
+                <a href="#diagnosis" class="block py-2 text-gray-600 hover:text-cyan-500">진단</a>
+                <a href="#method" class="block py-2 text-gray-600 hover:text-cyan-500">수업방식</a>
+                <a href="#reviews" class="block py-2 text-gray-600 hover:text-cyan-500">후기</a>
+                <a href="#contact" class="block py-2 text-gray-600 hover:text-cyan-500">입학안내</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-hero min-h-screen flex items-center pt-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-cyan-500 rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-golden-500 rounded-full filter blur-3xl"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-white">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                        수학과의 적정한 <span class="text-golden-500">사이</span>,<br>
+                        사이수학이 만들어갑니다
+                    </h1>
+                    <p class="text-lg sm:text-xl text-gray-200 mb-8 leading-relaxed">
+                        나와 친구 사이, 나와 선생님 사이, 개념과 성적 사이, 지금과 목표 사이, 수학과 입시 사이를
+                        <span class="text-golden-500 font-semibold">A/B/C 진단</span>과
+                        <span class="text-golden-500 font-semibold">3개월 쿼터제</span>,
+                        또래튜터링·발표 수업으로 이어줍니다.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="inline-flex items-center px-8 py-4 btn-golden text-deepblue-900 rounded-full font-semibold shadow-lg text-lg">
+                            무료 진단 신청
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                        <a href="program.html" class="inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur text-white rounded-full font-semibold hover:bg-white/20 transition border border-white/30 text-lg">
+                            프로그램 한눈에 보기
+                        </a>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <img src="image/1.png" alt="사이수학 컨셉" class="w-full max-w-lg animate-float drop-shadow-2xl">
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#about" class="text-white/70 hover:text-white transition">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section - 왜 사이일까요? -->
+    <section id="about" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-deepblue-900 mb-4">왜 <span class="text-cyan-500">'사이'</span>일까요?</h2>
+                <p class="text-xl text-gray-600">수학과 아이 사이의 거리를 좁혀가는 세 가지 방법</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 관계의 사이 -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl card-hover">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-cyan-500/30">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-deepblue-900 mb-4">관계의 사이</h3>
+                    <p class="text-gray-600 leading-relaxed">교사, 또래, 학부모와의 소통 속에서 자라나는 수학 자신감.</p>
+                </div>
+                <!-- 실력의 사이 -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl card-hover">
+                    <div class="w-16 h-16 bg-gradient-to-br from-golden-400 to-golden-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-golden-500/30">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-deepblue-900 mb-4">실력의 사이</h3>
+                    <p class="text-gray-600 leading-relaxed">현재 점수와 목표 점수 사이의 간격을 A(내용)–B(습관)–C(문제이해) 시스템으로 조정해 나갑니다.</p>
+                </div>
+                <!-- 시간의 사이 -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl card-hover">
+                    <div class="w-16 h-16 bg-gradient-to-br from-deepblue-700 to-deepblue-900 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-deepblue-500/30">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-deepblue-900 mb-4">시간의 사이</h3>
+                    <p class="text-gray-600 leading-relaxed">3개월 쿼터제로 교과·사고력·문제해결력을 균형 있게 설계합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABC Diagnosis Section -->
+    <section id="diagnosis" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="inline-block px-4 py-2 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold mb-4">A/B/C 진단 시스템</span>
+                    <h2 class="text-4xl font-bold text-deepblue-900 mb-6">3가지 축으로 보는<br>우리 아이 수학 상태</h2>
+
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-500 to-deepblue-900 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">A</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-deepblue-900 mb-2">내용(실력)</h4>
+                                <p class="text-gray-600">학년·단원·사고력 난이도 수준을 보는 축입니다. 교과 개념 이해와 심화 사고력까지 함께 진단합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">B</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-deepblue-900 mb-2">습관·집착력</h4>
+                                <p class="text-gray-600">숙제 완료율, 집중 시간, 오답 정리, 발표 참여 등을 통해 학습 습관을 평가합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-golden-400 to-golden-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">C</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-deepblue-900 mb-2">문제이해력</h4>
+                                <p class="text-gray-600">문제에서 '무엇을 구하라'는지 끝까지 읽고, 조건을 빠뜨리지 않는지 보는 축입니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-6 bg-gray-50 rounded-2xl border-l-4 border-cyan-500">
+                        <p class="text-gray-700 font-medium">입학 시 A/B/C 진단 → 분기별 리포트로 변화 과정을 보여드립니다.</p>
+                    </div>
+
+                    <a href="#contact" class="inline-flex items-center mt-8 px-6 py-3 btn-primary text-white rounded-full font-semibold shadow-lg">
+                        A/B/C 진단 과정 자세히 보기
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="flex justify-center">
+                    <div class="relative">
+                        <!-- Radar Chart Visualization -->
+                        <div class="w-[320px] h-[320px] relative">
+                            <!-- Background circles -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-[280px] h-[280px] border-2 border-gray-200 rounded-full"></div>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-[200px] h-[200px] border-2 border-gray-200 rounded-full"></div>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-[120px] h-[120px] border-2 border-gray-200 rounded-full"></div>
+                            </div>
+
+                            <!-- Labels -->
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2">
+                                <span class="px-4 py-2 bg-deepblue-900 text-white rounded-full text-sm font-bold shadow-lg">A 내용</span>
+                            </div>
+                            <div class="absolute bottom-8 left-4">
+                                <span class="px-4 py-2 bg-cyan-500 text-white rounded-full text-sm font-bold shadow-lg">B 습관</span>
+                            </div>
+                            <div class="absolute bottom-8 right-4">
+                                <span class="px-4 py-2 bg-golden-500 text-deepblue-900 rounded-full text-sm font-bold shadow-lg">C 이해</span>
+                            </div>
+
+                            <!-- Data Triangle -->
+                            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 320 320">
+                                <!-- Axes -->
+                                <line x1="160" y1="160" x2="160" y2="30" stroke="#e5e7eb" stroke-width="2"/>
+                                <line x1="160" y1="160" x2="50" y2="250" stroke="#e5e7eb" stroke-width="2"/>
+                                <line x1="160" y1="160" x2="270" y2="250" stroke="#e5e7eb" stroke-width="2"/>
+
+                                <!-- Data area -->
+                                <polygon
+                                    points="160,50 70,230 250,230"
+                                    fill="rgba(2, 177, 220, 0.2)"
+                                    stroke="#02B1DC"
+                                    stroke-width="3"
+                                />
+
+                                <!-- Data points -->
+                                <circle cx="160" cy="50" r="10" fill="#04165D"/>
+                                <circle cx="70" cy="230" r="10" fill="#02B1DC"/>
+                                <circle cx="250" cy="230" r="10" fill="#F1C615"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Overview Section -->
+    <section id="programs" class="py-24 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold mb-4">프로그램 개요</span>
+                <h2 class="text-4xl font-bold text-deepblue-900 mb-4">초·중·고 12년을 하나의 로드맵으로</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Stage 1 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xl card-hover border-t-4 border-pink-400">
+                    <div class="text-sm font-bold text-pink-500 mb-2">Stage 1</div>
+                    <h3 class="text-xl font-bold text-deepblue-900 mb-2">사이 빅뱅</h3>
+                    <p class="text-sm text-gray-500 mb-4">6~7세</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-pink-50 text-pink-600 rounded-full text-xs font-medium">흥미</span>
+                        <span class="px-3 py-1 bg-pink-50 text-pink-600 rounded-full text-xs font-medium">습관</span>
+                        <span class="px-3 py-1 bg-pink-50 text-pink-600 rounded-full text-xs font-medium">기초 사고력</span>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">놀이형·활동형 수업으로 수학과 친해지고, 규칙·도형 감각 등 다양한 수학적 경험을 합니다.</p>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xl card-hover border-t-4 border-cyan-500">
+                    <div class="text-sm font-bold text-cyan-500 mb-2">Stage 2</div>
+                    <h3 class="text-xl font-bold text-deepblue-900 mb-2">사이 유니버스</h3>
+                    <p class="text-sm text-gray-500 mb-4">초1~6</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-cyan-50 text-cyan-600 rounded-full text-xs font-medium">긍정적 정서</span>
+                        <span class="px-3 py-1 bg-cyan-50 text-cyan-600 rounded-full text-xs font-medium">자신감</span>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">스스로 발견한 이야기가 재미있는 스토리가 될 때 수학적 자신감이 형성됩니다.</p>
+                    <div class="mt-4 space-y-2 text-xs text-gray-500">
+                        <p><strong class="text-deepblue-900">사이-첫말</strong> 1~2학년</p>
+                        <p><strong class="text-deepblue-900">사이-채움</strong> 3~4학년</p>
+                        <p><strong class="text-deepblue-900">사이-너머</strong> 5~6학년</p>
+                    </div>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xl card-hover border-t-4 border-green-400">
+                    <div class="text-sm font-bold text-green-500 mb-2">Stage 3</div>
+                    <h3 class="text-xl font-bold text-deepblue-900 mb-2">사이 커넥트</h3>
+                    <p class="text-sm text-gray-500 mb-4">중1~3</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-medium">논리</span>
+                        <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-medium">확장</span>
+                        <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-medium">내신</span>
+                        <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-medium">선행</span>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">개념과 개념 사이, 논리의 다리를 놓습니다. 중등 교과와 사고력을 연결하고, 강서구 내신·선행 기준에 맞춘 3개월 쿼터제를 운영합니다.</p>
+                </div>
+
+                <!-- Stage 4 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xl card-hover border-t-4 border-deepblue-900">
+                    <div class="text-sm font-bold text-deepblue-700 mb-2">Stage 4</div>
+                    <h3 class="text-xl font-bold text-deepblue-900 mb-2">사이 인사이트·정점</h3>
+                    <p class="text-sm text-gray-500 mb-4">고1~3</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-deepblue-50 text-deepblue-700 rounded-full text-xs font-medium">원리</span>
+                        <span class="px-3 py-1 bg-deepblue-50 text-deepblue-700 rounded-full text-xs font-medium">완성</span>
+                        <span class="px-3 py-1 bg-deepblue-50 text-deepblue-700 rounded-full text-xs font-medium">수능</span>
+                        <span class="px-3 py-1 bg-deepblue-50 text-deepblue-700 rounded-full text-xs font-medium">진로</span>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">나만의 수학 언어로 세상을 말합니다. 고등 전 범위와 수능·내신·진로까지 연결하여 목표 대학과의 거리를 줄여갑니다.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="program.html" class="inline-flex items-center px-8 py-4 bg-deepblue-900 text-white rounded-full font-semibold hover:bg-deepblue-800 transition shadow-lg text-lg">
+                    학년별 커리큘럼 보기
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Method Section - 수업 방식 -->
+    <section id="method" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-golden-100 text-golden-700 rounded-full text-sm font-semibold mb-4">사이 메커니즘</span>
+                <h2 class="text-4xl font-bold text-deepblue-900 mb-4">사이수학 수업은 이렇게 진행됩니다</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="relative bg-gradient-to-br from-cyan-50 to-white rounded-3xl p-8 border border-cyan-100">
+                    <div class="absolute -top-4 -left-4 w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">1</div>
+                    <div class="pt-4">
+                        <h3 class="text-xl font-bold text-deepblue-900 mb-3">개념 이해</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">연령별, 단계별로 적정 방식과 언어로 접근합니다. 6세는 주변 탐색과 호기심 자극, 초등은 시각화와 스토리텔링, 중·고등은 식과 그래프로 수학의 언어를 통역합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative bg-gradient-to-br from-blue-50 to-white rounded-3xl p-8 border border-blue-100">
+                    <div class="absolute -top-4 -left-4 w-12 h-12 bg-deepblue-900 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">2</div>
+                    <div class="pt-4">
+                        <h3 class="text-xl font-bold text-deepblue-900 mb-3">문제해결</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">구체적 경험으로 접한 상황을 수학적 언어로 번역해보면서 결론을 찾아갑니다.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative bg-gradient-to-br from-green-50 to-white rounded-3xl p-8 border border-green-100">
+                    <div class="absolute -top-4 -left-4 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">3</div>
+                    <div class="pt-4">
+                        <h3 class="text-xl font-bold text-deepblue-900 mb-3">또래튜터링</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">친구와 모둠을 지어 활동이나 게임을 해보고, 친구에게 자신의 생각을 설득해보거나 설명해줍니다.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative bg-gradient-to-br from-golden-50 to-white rounded-3xl p-8 border border-golden-100">
+                    <div class="absolute -top-4 -left-4 w-12 h-12 bg-golden-500 rounded-full flex items-center justify-center text-deepblue-900 font-bold text-lg shadow-lg">4</div>
+                    <div class="pt-4">
+                        <h3 class="text-xl font-bold text-deepblue-900 mb-3">발표·질문 시간</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed"><strong>SAY 타임:</strong> 모든 수업의 40% 이상은 학생이 설명해보는 시간을 갖습니다.<br><strong>SAY 보드:</strong> 학생이 직접 보드에 판서하며 개념을 구조화합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="relative bg-gradient-to-br from-purple-50 to-white rounded-3xl p-8 border border-purple-100">
+                    <div class="absolute -top-4 -left-4 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">5</div>
+                    <div class="pt-4">
+                        <h3 class="text-xl font-bold text-deepblue-900 mb-3">AI·테스트 진단</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed"><strong>SAY 로그(성장 리포트):</strong> 학생이 직접 설명한 사진, 영상이나 논리 서술과정을 기록하여 학부모님께 공유합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="relative bg-gradient-to-br from-red-50 to-white rounded-3xl p-8 border border-red-100">
+                    <div class="absolute -top-4 -left-4 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">6</div>
+                    <div class="pt-4">
+                        <h3 class="text-xl font-bold text-deepblue-900 mb-3">개별 보충·맞춤형 과제 설계</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">개인별 취약점을 보완하고 강점을 더욱 발전시킬 수 있는 맞춤형 과제를 설계합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 p-8 bg-gradient-to-r from-deepblue-900 to-cyan-600 rounded-3xl text-white text-center">
+                <p class="text-lg font-medium">모든 반에서 이 6단계 루틴을 유지하여, <span class="text-golden-400 font-bold">설명하는 힘·집중력·문제해결력</span>을 함께 기릅니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Management Section -->
+    <section class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="inline-block px-4 py-2 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold mb-4">학습 관리·앱 연동</span>
+                    <h2 class="text-4xl font-bold text-deepblue-900 mb-6">수업 밖의 시간까지<br>관리합니다</h2>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-deepblue-900 mb-1">등하원 알림</h4>
+                                <p class="text-gray-600">등하원 알림, 숙제 제출 현황, 시험·진단 결과를 앱에서 확인할 수 있습니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-deepblue-900 mb-1">단원별 평가 결과</h4>
+                                <p class="text-gray-600">단원별 평가 결과를 전송합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-deepblue-900 mb-1">분기별 학부모 상담</h4>
+                                <p class="text-gray-600">분기마다 A/B/C 그래프, 반별 로드맵과 함께 학부모 상담을 진행합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-cyan-400 to-deepblue-900 rounded-3xl transform rotate-6"></div>
+                        <div class="relative bg-white rounded-3xl p-8 shadow-2xl">
+                            <div class="w-64 h-[500px] bg-gray-900 rounded-[40px] p-3 mx-auto">
+                                <div class="w-full h-full bg-gray-100 rounded-[32px] overflow-hidden flex items-center justify-center">
+                                    <div class="text-center p-4">
+                                        <div class="w-16 h-16 bg-cyan-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                            </svg>
+                                        </div>
+                                        <p class="text-gray-600 font-medium">학습관리 앱</p>
+                                        <p class="text-gray-400 text-sm">통통통</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-golden-100 text-golden-700 rounded-full text-sm font-semibold mb-4">학부모 후기·성과</span>
+                <h2 class="text-4xl font-bold text-deepblue-900 mb-4">사이수학을 선택한 이유</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-gradient-to-br from-pink-50 to-white rounded-3xl p-8 shadow-lg border border-pink-100 card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-pink-200 rounded-full flex items-center justify-center text-pink-600 font-bold">7세</div>
+                        <div class="flex text-golden-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium text-lg">"수학은 공부가 아니에요. 놀이에요."</p>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-gradient-to-br from-cyan-50 to-white rounded-3xl p-8 shadow-lg border border-cyan-100 card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-cyan-200 rounded-full flex items-center justify-center text-cyan-600 font-bold">초1</div>
+                        <div class="flex text-golden-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium text-lg">"수학적 정서가 좋아졌어요. 매일 가고 싶어해요."</p>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-gradient-to-br from-green-50 to-white rounded-3xl p-8 shadow-lg border border-green-100 card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center text-green-600 font-bold">초4</div>
+                        <div class="flex text-golden-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium text-lg">"수학 자신감 회복 사례"</p>
+                    <p class="text-cyan-600 font-semibold mt-2">A2–B1–C1 → A2–B2–C2 변화</p>
+                </div>
+
+                <!-- Review 4 -->
+                <div class="bg-gradient-to-br from-golden-50 to-white rounded-3xl p-8 shadow-lg border border-golden-100 card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-golden-200 rounded-full flex items-center justify-center text-golden-700 font-bold">초5</div>
+                        <div class="flex text-golden-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium text-lg">"서울교대 영재원에 합격했어요."</p>
+                </div>
+
+                <!-- Review 5 -->
+                <div class="bg-gradient-to-br from-indigo-50 to-white rounded-3xl p-8 shadow-lg border border-indigo-100 card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-indigo-200 rounded-full flex items-center justify-center text-indigo-600 font-bold">중2</div>
+                        <div class="flex text-golden-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium text-lg">"수학 70점→100점, 선행·내신 균형 유지"</p>
+                </div>
+
+                <!-- Review 6 -->
+                <div class="bg-gradient-to-br from-deepblue-50 to-white rounded-3xl p-8 shadow-lg border border-deepblue-100 card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-deepblue-200 rounded-full flex items-center justify-center text-deepblue-700 font-bold">고1</div>
+                        <div class="flex text-golden-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium text-lg">"공통수학·대수 선행 및 6월 모의 1등급 달성"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section - 입학 절차 -->
+    <section id="contact" class="py-24 bg-gradient-to-br from-deepblue-900 to-cyan-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-white/20 text-white rounded-full text-sm font-semibold mb-4">입학 절차·문의</span>
+                <h2 class="text-4xl font-bold mb-4">사이수학과 함께 시작하세요</h2>
+            </div>
+
+            <!-- Timeline -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <div class="relative bg-white/10 backdrop-blur rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-golden-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-deepblue-900 shadow-lg">1</div>
+                    <h3 class="text-xl font-bold mb-2">온라인 문의</h3>
+                    <p class="text-white/80 text-sm">전화문의 / 카카오톡 친구추가 / 네이버톡톡</p>
+                </div>
+                <div class="relative bg-white/10 backdrop-blur rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-golden-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-deepblue-900 shadow-lg">2</div>
+                    <h3 class="text-xl font-bold mb-2">사이수학 갭 테스트</h3>
+                    <p class="text-white/80 text-sm">A/B/C 진단 (40분)</p>
+                </div>
+                <div class="relative bg-white/10 backdrop-blur rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-golden-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-deepblue-900 shadow-lg">3</div>
+                    <h3 class="text-xl font-bold mb-2">결과 상담·반 배정</h3>
+                    <p class="text-white/80 text-sm">진단 결과를 바탕으로 맞춤 상담</p>
+                </div>
+                <div class="relative bg-white/10 backdrop-blur rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-golden-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-deepblue-900 shadow-lg">4</div>
+                    <h3 class="text-xl font-bold mb-2">정식 등록</h3>
+                    <p class="text-white/80 text-sm">사이수학 가족이 되어주세요</p>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#" class="inline-flex items-center px-8 py-4 btn-golden text-deepblue-900 rounded-full font-semibold shadow-lg text-lg">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    진단 신청
+                </a>
+                <a href="#" class="inline-flex items-center px-8 py-4 bg-yellow-400 text-gray-900 rounded-full font-semibold hover:bg-yellow-300 transition shadow-lg text-lg">
+                    <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3C6.5 3 2 6.58 2 11c0 2.63 1.56 4.97 4 6.47V21l3.5-2.1c.78.13 1.62.1 2.5.1 5.5 0 10-3.58 10-8s-4.5-8-10-8z"/>
+                    </svg>
+                    카카오 상담
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="logo/SNS적용이미지 (2).png" alt="사이수학 로고" class="h-10 w-auto brightness-0 invert">
+                        <span class="text-xl font-bold text-white">사이수학</span>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4">수학과의 적정한 사이를 만들어가는 사이수학입니다.<br>A/B/C 진단과 3개월 쿼터제로 체계적인 수학 교육을 제공합니다.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">바로가기</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#about" class="hover:text-white transition">소개</a></li>
+                        <li><a href="program.html" class="hover:text-white transition">프로그램</a></li>
+                        <li><a href="#diagnosis" class="hover:text-white transition">진단</a></li>
+                        <li><a href="#contact" class="hover:text-white transition">입학안내</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">연락처</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span></span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-sm">
+                <p>&copy; 2024 사이수학 SAY MATH. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
 </html>
